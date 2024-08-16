@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Table Design</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f1f3f5;
+        }
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+        input[type="checkbox"] {
+            margin: 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <table id="bugTable">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Bug ID</th>
+                <th>Number of Weeks</th>
+                <th>Additional Info</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example row -->
+            <tr>
+                <td><input type="checkbox" class="bug-checkbox" value="bug1"></td>
+                <td>BUG-123</td>
+                <td>2</td>
+                <td></td>
+                <td><button onclick="performActions()">Perform Actions</button></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="bug-checkbox" value="bug2"></td>
+                <td>BUG-456</td>
+                <td>1</td>
+                <td><input type="text" placeholder="Enter info..."></td>
+                <td><button onclick="performActions()">Perform Actions</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function performActions() {
+            const checkboxes = document.querySelectorAll('.bug-checkbox');
+            const selectedIds = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedIds.push(checkbox.value);
+                }
+            });
+
+            if (selectedIds.length > 0) {
+                // Example action: log selected IDs
+                console.log('Selected Bug IDs:', selectedIds);
+                // You can perform other actions here based on selected IDs
+            } else {
+                alert('No bugs selected.');
+            }
+        }
+    </script>
+</body>
+</html>
