@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table with Actions</title>
+    <style>
+        /* Basic styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* Table container */
+        .table-container {
+            max-width: 1000px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        /* Button style */
+        .action-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        .checkbox {
+            margin: 0;
+        }
+
+        /* Combo box style */
+        .combo-box {
+            width: 150px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <h1>Dynamic Table with Actions</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Bug ID</th>
+                    <th>Number of Weeks</th>
+                    <th>Question</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <button class="action-button" onclick="triggerActions()">Trigger Actions</button>
+    </div>
+
+    <script>
+        // Array of data with bug IDs and number of weeks
+        const data = [
+            { bugId: 'BUG-001', weeks: 1 },
+            { bugId: 'BUG-002', weeks: 2 },
+            { bugId: 'BUG-003', weeks: 1 },
+            { bugId: 'BUG-004', weeks: 3 }
+        ];
+
+        // Reference to the table body
+        const tableBody = document.getElementById('tableBody');
+
+        // Function to create table rows dynamically based on data
+        data.forEach((item) => {
+            // Create a new table row
+            const row = document.createElement('tr');
+
+            // Create the checkbox cell (first column)
+            const checkboxCell = document.createElement('td');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'checkbox';
+            checkbox.value = item.bugId;
+            checkboxCell.appendChild(checkbox);
+
+            // Create the bug ID label cell (second column)
+            const bugIdCell = document.createElement('td');
+            bugIdCell.textContent = item.bugId;
+
+            // Create the number of weeks cell (third column)
+            const weeksCell = document.createElement('td');
+            weeksCell.textContent = item.weeks;
+
+            // Create the combo box cell (fourth column)
+            const questionCell = document.createElement('td');
+
+            if (item.weeks === 1) {
+                const comboBox = document.createElement('select');
+                comboBox.className = 'combo-box';
+                const option1 = document.createElement('option');
+                option1.text = 'Option 1';
+                const option2 = document.createElement('option');
+                option2.text = 'Option 2';
+                comboBox.add(option1);
+                comboBox.add(option2);
+                questionCell.appendChild(comboBox);
+            }
+
+            // Create the action button cell (fifth column)
+            const actionCell = document.createElement('td');
+            const actionButton = document.createElement('button');
+            actionButton.className = 'action-button';
+            actionButton.textContent = 'Raise Action';
+            actionButton.addEventListener('click', () => alert('Action raised for ' + item.bugId));
+            actionCell.appendChild(actionButton);
+
+            // Add all cells to the row
+            row.appendChild(checkboxCell);
+            row.appendChild(bugIdCell);
+            row.appendChild(weeksCell);
+            row.appendChild(questionCell);
+            row.appendChild(actionCell);
+
+            // Add the row to the table body
+            tableBody.appendChild(row);
+        });
+
+        // Function to trigger actions based on selected checkboxes
+        function triggerActions() {
+            const checkboxes = document.querySelectorAll('.checkbox:checked');
+            const selectedIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+            if (selectedIds.length > 0) {
+                alert('Actions triggered for: ' + selectedIds.join(', '));
+            } else {
+                alert('No items selected.');
+            }
+        }
+    </script>
+
+</body>
+</html>
