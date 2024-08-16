@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Table Design</title>
+    <title>Dynamic Table</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -66,54 +66,79 @@
     </style>
 </head>
 <body>
-    <table id="bugTable">
-        <thead>
-            <tr>
-                <th>Select</th>
-                <th>Bug ID</th>
-                <th>Number of Weeks</th>
-                <th>Additional Info</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Example row -->
-            <tr>
-                <td><input type="checkbox" class="bug-checkbox" value="bug1"></td>
-                <td>BUG-123</td>
-                <td>2</td>
-                <td></td>
-                <td><button onclick="performActions()">Perform Actions</button></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="bug-checkbox" value="bug2"></td>
-                <td>BUG-456</td>
-                <td>1</td>
-                <td><input type="text" placeholder="Enter info..."></td>
-                <td><button onclick="performActions()">Perform Actions</button></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <script>
-        function performActions() {
-            const checkboxes = document.querySelectorAll('.bug-checkbox');
-            const selectedIds = [];
+<table id="dynamicTable">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Bug ID</th>
+            <th>Weeks</th>
+            <th>Action</th>
+            <th>Execute</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Rows will be dynamically inserted here -->
+    </tbody>
+</table>
 
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedIds.push(checkbox.value);
-                }
-            });
+<script>
+    const data = [
+        { bugId: '12345', weeks: 2 },
+        { bugId: '67890', weeks: 1 },
+        { bugId: '54321', weeks: 3 },
+    ];
 
-            if (selectedIds.length > 0) {
-                // Example action: log selected IDs
-                console.log('Selected Bug IDs:', selectedIds);
-                // You can perform other actions here based on selected IDs
-            } else {
-                alert('No bugs selected.');
-            }
+    const tableBody = document.querySelector('#dynamicTable tbody');
+
+    data.forEach(item => {
+        const row = document.createElement('tr');
+
+        // Checkbox
+        const selectCell = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = item.bugId;
+        selectCell.appendChild(checkbox);
+        row.appendChild(selectCell);
+
+        // Bug ID
+        const bugIdCell = document.createElement('td');
+        bugIdCell.textContent = item.bugId;
+        row.appendChild(bugIdCell);
+
+        // Weeks
+        const weeksCell = document.createElement('td');
+        weeksCell.textContent = item.weeks;
+        row.appendChild(weeksCell);
+
+        // Action (Input Box if weeks <= 1)
+        const actionCell = document.createElement('td');
+        if (item.weeks > 1) {
+            actionCell.textContent = '';
+        } else {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Enter your question';
+            actionCell.appendChild(input);
         }
-    </script>
+        row.appendChild(actionCell);
+
+        // Execute Button
+        const executeCell = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'Run Actions';
+        button.onclick = () => {
+            const checkedIds = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                                    .map(cb => cb.value);
+            alert(`Executing actions for Bug IDs: ${checkedIds.join(', ')}`);
+        };
+        executeCell.appendChild(button);
+        row.appendChild(executeCell);
+
+        tableBody.appendChild(row);
+    });
+</script>
+
 </body>
 </html>
