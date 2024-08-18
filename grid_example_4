@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Bug Tracker Grid</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input[type="text"] {
+            width: 100%;
+        }
+        .button {
+            padding: 5px 10px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamic Bug Tracker</h1>
+    <table id="bugTable">
+        <thead>
+            <!-- Header will be dynamically created here -->
+        </thead>
+        <tbody>
+            <!-- Rows will be dynamically created here -->
+        </tbody>
+    </table>
+    <!-- Button to process all selected rows -->
+    <button id="processAll" class="button">Process All Selected</button>
+
+    <script>
+        // Sample input array
+        const bugs = [
+            { bugId: 1, title: 'Bug in login', weeks: 1 },
+            { bugId: 2, title: 'UI glitch on homepage', weeks: 2 },
+            { bugId: 3, title: 'Database connection issue', weeks: 0 }
+        ];
+
+        // Function to create table header dynamically
+        function createTableHeader() {
+            const headers = ['Select', 'Bug ID', 'Title', 'Weeks', 'Input', 'Action'];
+            const thead = document.querySelector('#bugTable thead');
+            const headerRow = document.createElement('tr');
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+        }
+
+        // Function to create table rows dynamically based on the input array
+        function createTableRows() {
+            const tableBody = document.querySelector('#bugTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            bugs.forEach(bug => {
+                const row = document.createElement('tr');
+
+                // Create checkbox cell
+                const checkboxCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'select-checkbox';
+                checkbox.dataset.bugId = bug.bugId;
+                checkboxCell.appendChild(checkbox);
+                row.appendChild(checkboxCell);
+
+                // Create Bug ID cell
+                const bugIdCell = document.createElement('td');
+                bugIdCell.textContent = bug.bugId;
+                row.appendChild(bugIdCell);
+
+                // Create Title cell
+                const titleCell = document.createElement('td');
+                titleCell.textContent = bug.title;
+                row.appendChild(titleCell);
+
+                // Create Weeks cell
+                const weeksCell = document.createElement('td');
+                weeksCell.className = 'weeks-cell';
+                weeksCell.textContent = bug.weeks;
+                row.appendChild(weeksCell);
+
+                // Create Input cell
+                const inputCell = document.createElement('td');
+                if (bug.weeks <= 1) {
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.className = 'input-field';
+                    inputField.value = `Input for bug ${bug.bugId}`;
+                    inputCell.appendChild(inputField);
+                }
+                row.appendChild(inputCell);
+
+                // Create Action cell
+                const actionCell = document.createElement('td');
+                const actionButton = document.createElement('button');
+                actionButton.className = 'action-button';
+                actionButton.dataset.weeks = bug.weeks;
+                actionButton.textContent = bug.weeks > 1 ? 'Perform Action' : 'Log Record';
+                actionCell.appendChild(actionButton);
+                row.appendChild(actionCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to handle row button click
+        function handleRowButtonClick(button) {
+            const weeks = parseInt(button.dataset.weeks, 10);
+            const row = button.closest('tr');
+            const bugId = row.querySelector('.select-checkbox').dataset.bugId;
+
+            if (weeks > 1) {
+                alert('Action performed for bug ID: ' + bugId);
+            } else {
+                console.log('Record logged for bug ID: ' + bugId);
+            }
+        }
+
+        // Function to process all selected checkboxes and collect data
+        function processAllSelected() {
+            const selectedCheckboxes = document.querySelectorAll('.select-checkbox:checked');
+            const selectedData = [];
+
+            selectedCheckboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const bugId = checkbox.dataset.bugId;
+                const title = row.cells[2].textContent;
+                const weeks = row.querySelector('.weeks-cell').textContent;
+                const inputField = row.querySelector('.input-field');
+                const inputValue = inputField ? inputField.value : '';
+
+                selectedData.push({
+                    bugId,
+                    title,
+                    weeks,
+                    inputValue
+                });
+
+                // Perform action based on weeks value
+                if (weeks > 1) {
+                    alert(`Action performed for bug ID: ${bugId} with weeks: ${weeks}`);
+                } else {
+                    console.log(`Record logged for bug ID: ${bugId} with input: ${inputValue}`);
+                }
+            });
+
+            // Show result in an alert
+            alert('Selected Data: ' + JSON.stringify(selectedData, null, 2));
+        }
+
+        // Attach event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            createTableHeader(); // Create table header
+            createTableRows();   // Create table rows
+            
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', () => handleRowButtonClick(button));
+            });
+
+            document.getElementById('processAll').addEventListener('click', processAllSelected);
+        });
+    </script>
+</body>
+</html>
