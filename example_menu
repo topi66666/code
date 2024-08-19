@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>menu.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+.menu-right{float:right!important}
+.menu-bar{width:100%;overflow:hidden}.menu-center .menu-bar{display:inline-block;width:auto}
+.menu-bar .menu-dropdown-click{position:static;float:left}
+.menu-bar .menu-button{white-space:normal}
+
+.menu-card{box-shadow:0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)}
+
+.menu-padding{padding:8px 16px!important}.menu-padding-large{padding:12px 24px!important}
+
+.menu-wide{letter-spacing:4px}
+
+.menu-button:hover{color:#000!important;background-color:#ccc!important}
+.menu-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
+
+
+</style>
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="menu-top">
+  <div class="menu-bar menu-white menu-wide menu-padding menu-card">
+    <a href="#home" class="menu-bar-item menu-button"><b>Bug</b> Tracker</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="menu-right menu-hide-small">
+      <a href="#test1" class="menu-bar-item menu-button">Projects</a>
+      <a href="#test2" class="menu-bar-item menu-button">About</a>
+      <a href="#test3" class="menu-bar-item menu-button">Contact</a>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
