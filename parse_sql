@@ -1,0 +1,93 @@
+import csv
+import pandas as pd
+import re
+import os
+
+array_of_file=('D:/Development/Developments/Input/query_sql.sql','D:/Development/Developments/Input/query_sql_2.sql')
+line_number=1
+previous_line=""
+previous_row=0
+statement_terminator=";"
+create_or_replace="CREATE OR REPLACE TABLE"
+define_table="DEFINE TABLE"
+run_script="RUN"
+from_table="FROM"
+line_number_create=1
+type_statement=""
+line_statement=""
+df_columns_statement=['Start Statement', 'Line Start Statement', 'Line End Statement', 'Statement Type', 'Destination Object Type', 'Destination Name', 'Read from', 'Path File Name', 'File_Name']
+df=pd.DataFrame(columns=df_columns_statement)
+line_number_end_statement=1
+line_number_start_statement=1
+previous_line_number_start_statement=1
+current_line_number_start_statement=1
+object_name=""
+object_type=""
+object_name_from=""
+
+for file in array_of_file:
+
+    with open (file, mode='r', newline='') as csv_file:
+    # reader = csv.reader(file)
+        source_path_file_name=file
+        source_file_name=os.path.basename(file)
+
+        for row in csv_file:
+            row = row.strip()
+            if row:
+                if(create_or_replace in row):
+                    line_number_start_statement=line_number
+                    line_statement=row
+                    type_statement=create_or_replace
+                    pattern_match=re.search(rf'{re.escape(create_or_replace)}\s+(\w+.\w+.\w+.\w+.)', row, re.IGNORECASE)
+                    if pattern_match:
+                        object_name=pattern_match.group(1)
+                    object_type="TABLE"
+                elif(define_table in row):
+                    line_number_start_statement=line_number
+                    line_statement=row
+                    type_statement=define_table
+                    pattern_match=re.search(rf'{re.escape(define_table)}\s+(\w+.\w+.\w+.\w+.)', row, re.IGNORECASE)
+                    if pattern_match:
+                        object_name=pattern_match.group(1)
+                    object_type="TABLE"
+                elif(run_script in row):
+                    line_number_start_statement=line_number
+                    line_statement=row
+                    type_statement=run_script
+                    pattern_match=re.search(rf'{re.escape(run_script)}\s+(\w+)', row, re.IGNORECASE)
+                    if pattern_match:
+                        object_name=pattern_match.group(1)
+                    object_type="SCRIPT"
+                #print(f"line: {row}, group statement: {line_number_start_statement}, pertains to statement: {line_statement}, current line: {row}, previous_line_number_start_statement: {previous_line_number_start_statement}")
+                
+                # marks as new statement
+                if line_number_start_statement!=previous_line_number_start_statement:
+                    1==1
+                    object_name_from=""
+                    # print(f"new statement: {row} ")
+
+                # marks as part of same statement
+                else:
+                    if(from_table in row):
+                        pattern_match=re.search(rf'{re.escape(from_table)}\s+(\w+.\w+.\w+.\w+.)', row, re.IGNORECASE)
+                        if pattern_match:
+                            object_name_from=pattern_match.group(1)
+                    print(f"part of same statement {row}, group statement: {line_statement}, object name: {object_name_from}")
+
+                if statement_terminator in row:
+                    line_number_end_statement = line_number
+                    #print(f"end statement {line_number_end_statement}, number line start stament:, {line_number_start_statement}, start statement:, {line_statement}")
+                    new_pd_row={'Start Statement': line_statement, 'Line Start Statement': line_number_start_statement, 'Line End Statement': line_number_end_statement
+                                , 'Statement Type': type_statement, 'Destination Object Type': object_type, 'Destination Name': object_name, 'Read from': object_name_from, 'Path File Name': source_file_name, 'File_Name': source_path_file_name}
+                    df.loc[len(df)+1] = new_pd_row
+            
+            current_row = line_number
+            previous_row = current_row        
+            current_line_number_start_statement = line_number_start_statement
+            previous_line_number_start_statement = current_line_number_start_statement
+            current_line = row
+            previous_line = current_line
+            line_number = line_number + 1
+    
+# print(df)
