@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .image {
+      width: 100%;
+      min-height: 100vh;
+      //background-image: url("https://drive.google.com/uc?export=view&id=1RKwhgKUdRfOxaQijHoQZWTqeNaqQgKzO");
+      //background-image: url("https://drive.google.com/thumbnail?id=1RKwhgKUdRfOxaQijHoQZWTqeNaqQgKzO&sz=w1000");
+      background-position: center;
+      background-size: cover;
+      padding: 10px 10%;
+      overflow: hidden;
+    }
+
+    .logo{
+      width: 140px;
+    }
+
+    nav{
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav ul li{
+      display: inline-block;
+      list-style: none;
+      margin: 10px 15px;
+    }
+
+    nav ul li a{
+      text-decoration: none;
+      color: #333;
+      font-weight: 400;
+    }
+
+    .download{
+      display: inline-block;
+      text-decoration: none;
+      padding: 14px 40px;
+      color: #fff;
+      background-image: linear-gradient(45deg, #df4881, #c430d7);
+      font-size; 14px;
+      border-radius: 30px;
+      border-top-right-radius: 0;
+    }
+
+    .content{
+      margin-top: 10%;
+      msx-width: 600px;
+    }
+
+    .content h1{
+      font-size: 70px;
+      color: #222;
+    }
+
+    .content p{
+      margin: 10px 0 30px;
+    }
+
+    .login{
+      text-decoration: none;
+      padding: 30px;
+    }
+
+    .menu.open{
+      display: block;
+      opacity: 1;
+      //background-color: #333;
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="image">
+    <nav>
+      <!--<img src="https://drive.google.com/thumbnail?id=1jwc-fVM_i1ywSdOrpsKF5wHr__-l2JSc&sz=w1000" class="logo">-->
+      <div class="menu">
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">How it works</a></li>
+          <li><a href="#">Features</a></li>
+        </ul>
+      </div>
+      <div>
+        <a href="#" class="login">Log in</a>
+        <a href="#" class="download">Download</a>
+      </div>
+    </nav>
+    <div class="content">
+      <h1>Template Testing</h1>
+      <p>Testing functionality for my purposes</p>
+    </div>
+    <label>What do you want to do</label>
+    <select title="Type of request">
+    </input>
+  </div>
+
+
+  <script>
+  </script>
+
+</body>
+</html>
